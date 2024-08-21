@@ -1,6 +1,6 @@
 import { useAsyncInitialize } from "./useAsyncInitialize";
 import { useTonClient } from "./useTonClient";
-import { Ruffruff, SubmitWallet, WalletResponse } from "../wrappers/Ruffruff";
+import { Ruffruff, SubmitWallet, TransferToHoldingWallet, WalletResponse } from "../wrappers/Ruffruff";
 import { Address, OpenedContract, Dictionary, toNano } from "@ton/core";
 import { useState } from "react";
 import { useTonConnect,} from "./useTonConnect";
@@ -18,7 +18,7 @@ export function useRuffContract() {
     const ruffCon: OpenedContract<Ruffruff> | undefined = useAsyncInitialize(async () => {
         if (!client) return;
 
-        const contract = Ruffruff.fromAddress(Address.parse("EQB7vFlIfwZvW2uJWkBZmYTMNE5XiAPmGVE-Sq5MrWKlYWpW"));
+        const contract = Ruffruff.fromAddress(Address.parse("kQC7AGTh1uEb3yLVGQn699LR0dEvbSKjiiry6n6qFIF1Smcr"));
 
         return client.open(contract) as OpenedContract<Ruffruff>;
     }, [client]);
@@ -27,7 +27,7 @@ export function useRuffContract() {
         if (!ruffCon) return;
         setWalletList([]);
         try {
-            const res: Dictionary<Address, WalletResponse> = await ruffCon.getGetSubmittedWallets();
+            const res: Dictionary<Address, WalletResponse> = await ruffCon.getSubmittedWallets() ;
             console.log('Fetched Wallets:', res);
 
             const walletArray: WalletInfo[] = [];
@@ -59,8 +59,17 @@ export function useRuffContract() {
             address:addr,
           }
           ruffCon?.send(sender, {
-              value: toNano("0.01")
+              value: toNano("0.00")
           },message)
+        },
+        joinPool:(amount: number ) =>{
+            const message : TransferToHoldingWallet = {
+                $$type:"TransferToHoldingWallet",
+                amount:toNano(amount),
+            }
+            ruffCon?.send(sender, {
+                value:toNano(amount)
+            }, message )
         }
     };
 }

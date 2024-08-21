@@ -1,13 +1,20 @@
 import './App.css'
-import { TonConnectButton } from '@tonconnect/ui-react'
+import { TonConnectButton, useTonWallet } from '@tonconnect/ui-react'
 import { AppRoot, Button, Input } from '@telegram-apps/telegram-ui'
 import { useRuffContract } from './hooks/useRuffContract'
 import { useState } from 'react'
 import { Address } from '@ton/core'
 
+
 function App() {
     const [addr, setAddr] = useState('')
-    const { walletList, getWalletList , submitWallet} = useRuffContract()
+    const [poolType, setPoolType] = useState('hourly') // State to track selected pool
+    const { walletList, 
+            getWalletList , 
+            submitWallet, 
+            joinPool,
+        } = useRuffContract()
+    const  wallet  = useTonWallet() // Get the connected wallet
 
     const saveAddr = () => {
         console.log('clicked', addr)
@@ -23,20 +30,68 @@ function App() {
         console.log('Updated list:', walletList);
     }
 
+    const handlePoolChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setPoolType(e.target.value);
+    };
+
+    const handleJoinPool = () => {
+        console.log(`Joined ${poolType === 'hourly' ? 'Hourly Pool' : 'Daily Pool'}`);
+        joinPool(1.5)
+    };
+
     return (
         <AppRoot>
-            <div className='container m-2 p-2 '>
-                <div className="count flex p-8 mt-8 bg-gray-200  items-center justify-center">
+            <div className='container m-2 p-2'>
+                <div className="count flex p-8 mt-8 bg-gray-200 items-center justify-center">
+                    
                     <TonConnectButton />
+                    {wallet && (
+                        <Button 
+                            className='ml-4 bg-[#0098EA] p-2 rounded-[15px]' 
+                            onClick={handleJoinPool} 
+                            mode="filled" 
+                            size="s">
+                            Join Raffle
+                        </Button>
+                    )}
                 </div>
-                <div className="flex flex-col bg-gray-200 justify-center items-center pb-8 mb-4">
+
+                <div className="mt-4 flex gap-4 items-center justify-center mb-4">
+                        <label>
+                            <input 
+                                type="radio" 
+                                name="poolType" 
+                                value="hourly" 
+                                checked={poolType === 'hourly'} 
+                                onChange={handlePoolChange} 
+                            />
+                            Hourly Pool
+                        </label>
+                        <label>
+                            <input 
+                                type="radio" 
+                                name="poolType" 
+                                value="daily" 
+                                checked={poolType === 'daily'} 
+                                onChange={handlePoolChange} 
+                            />
+                            Daily Pool
+                        </label>
+                </div>
+
+                <div className="flex flex-col bg-gray-200 justify-center items-center pb-8 mb-4 pt-8">
                     <Input
                         className='p-2 rounded-[15px]'
                         value={addr}
                         onChange={handleInputChange}
                         placeholder="Enter wallet address"
                     />
-                    <Button className='mt-8 bg-[#0098EA] p-2 rounded-[15px]' onClick={saveAddr} mode="filled" size="s">
+                    
+                    <Button 
+                        className='mt-8 bg-[#0098EA] p-2 rounded-[15px]' 
+                        onClick={saveAddr} 
+                        mode="filled" 
+                        size="s">
                         Add Wallet
                     </Button>
                 </div>

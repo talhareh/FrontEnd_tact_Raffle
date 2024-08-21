@@ -363,6 +363,90 @@ function dictValueParserSubmitWallet(): DictionaryValue<SubmitWallet> {
     }
 }
 
+export type SetHoldingWallet = {
+    $$type: 'SetHoldingWallet';
+    address: Address;
+}
+
+export function storeSetHoldingWallet(src: SetHoldingWallet) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(4087144204, 32);
+        b_0.storeAddress(src.address);
+    };
+}
+
+export function loadSetHoldingWallet(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 4087144204) { throw Error('Invalid prefix'); }
+    let _address = sc_0.loadAddress();
+    return { $$type: 'SetHoldingWallet' as const, address: _address };
+}
+
+function loadTupleSetHoldingWallet(source: TupleReader) {
+    let _address = source.readAddress();
+    return { $$type: 'SetHoldingWallet' as const, address: _address };
+}
+
+function storeTupleSetHoldingWallet(source: SetHoldingWallet) {
+    let builder = new TupleBuilder();
+    builder.writeAddress(source.address);
+    return builder.build();
+}
+
+function dictValueParserSetHoldingWallet(): DictionaryValue<SetHoldingWallet> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeSetHoldingWallet(src)).endCell());
+        },
+        parse: (src) => {
+            return loadSetHoldingWallet(src.loadRef().beginParse());
+        }
+    }
+}
+
+export type TransferToHoldingWallet = {
+    $$type: 'TransferToHoldingWallet';
+    amount: bigint;
+}
+
+export function storeTransferToHoldingWallet(src: TransferToHoldingWallet) {
+    return (builder: Builder) => {
+        let b_0 = builder;
+        b_0.storeUint(3381338985, 32);
+        b_0.storeInt(src.amount, 257);
+    };
+}
+
+export function loadTransferToHoldingWallet(slice: Slice) {
+    let sc_0 = slice;
+    if (sc_0.loadUint(32) !== 3381338985) { throw Error('Invalid prefix'); }
+    let _amount = sc_0.loadIntBig(257);
+    return { $$type: 'TransferToHoldingWallet' as const, amount: _amount };
+}
+
+function loadTupleTransferToHoldingWallet(source: TupleReader) {
+    let _amount = source.readBigNumber();
+    return { $$type: 'TransferToHoldingWallet' as const, amount: _amount };
+}
+
+function storeTupleTransferToHoldingWallet(source: TransferToHoldingWallet) {
+    let builder = new TupleBuilder();
+    builder.writeNumber(source.amount);
+    return builder.build();
+}
+
+function dictValueParserTransferToHoldingWallet(): DictionaryValue<TransferToHoldingWallet> {
+    return {
+        serialize: (src, builder) => {
+            builder.storeRef(beginCell().store(storeTransferToHoldingWallet(src)).endCell());
+        },
+        parse: (src) => {
+            return loadTransferToHoldingWallet(src.loadRef().beginParse());
+        }
+    }
+}
+
 export type WalletResponse = {
     $$type: 'WalletResponse';
     address: Address;
@@ -419,8 +503,8 @@ function initRuffruff_init_args(src: Ruffruff_init_args) {
 }
 
 async function Ruffruff_init() {
-    const __code = Cell.fromBase64('te6ccgECDwEAAlMAART/APSkE/S88sgLAQIBYgIDApjQAdDTAwFxsKMB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFRQUwNvBPhhAvhi2zxZ2zzy4ILI+EMBzH8BygABAfQAye1UDAQCAnYKCwKeAZIwf+BwIddJwh+VMCDXCx/eIIIQXY5ywrrjAoIQlGqYtrqOp9MfAYIQlGqYtrry4IHTPwExyAGCEK/5D1dYyx/LP8n4QgFwbds8f+AwcAUGAf4w0x8BghBdjnLCuvLggfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IgxcIBk+ERul/gl+BV/+GTeIaH4EaBSEAGBAQsCyFlZINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WgQEBzwDJEiBulTBZ9FkwlEEz9BPiBwE6bW0ibrOZWyBu8tCAbyIBkTLiECRwAwSAQlAj2zwIAAJ/AcrIcQHKAVAHAcoAcAHKAlAFINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WUAP6AnABymgjbrORf5MkbrPilzMzAXABygDjDSFus5x/AcoAASBu8tCAAcyVMXABygDiyQH7AAkAmH8BygDIcAHKAHABygAkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDiJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4nABygACfwHKAALJWMwAEbCvu1E0NIAAYAIPsJO2zzbPDGAMDQE87UTQ1AH4Y9IAAZT0BAEx4DD4KNcLCoMJuvLgids8DgACIAACbQ==');
-    const __system = Cell.fromBase64('te6cckECEQEAAl0AAQHAAQEFoR1bAgEU/wD0pBP0vPLICwMCAWIECwKY0AHQ0wMBcbCjAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IhUUFMDbwT4YQL4Yts8Wds88uCCyPhDAcx/AcoAAQH0AMntVA4FAp4BkjB/4HAh10nCH5UwINcLH94gghBdjnLCuuMCghCUapi2uo6n0x8BghCUapi2uvLggdM/ATHIAYIQr/kPV1jLH8s/yfhCAXBt2zx/4DBwBggB/jDTHwGCEF2OcsK68uCB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiDFwgGT4RG6X+CX4FX/4ZN4hofgRoFIQAYEBCwLIWVkg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxaBAQHPAMkSIG6VMFn0WTCUQTP0E+IHAAJ/ATptbSJus5lbIG7y0IBvIgGRMuIQJHADBIBCUCPbPAkByshxAcoBUAcBygBwAcoCUAUg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZQA/oCcAHKaCNus5F/kyRus+KXMzMBcAHKAOMNIW6znH8BygABIG7y0IABzJUxcAHKAOLJAfsACgCYfwHKAMhwAcoAcAHKACRus51/AcoABCBu8tCAUATMljQDcAHKAOIkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDicAHKAAJ/AcoAAslYzAICdgwNABGwr7tRNDSAAGACD7CTts82zwxgDhABPO1E0NQB+GPSAAGU9AQBMeAw+CjXCwqDCbry4InbPA8AAm0AAiA8s7ey');
+    const __code = Cell.fromBase64('te6ccgECFAEAA2sAART/APSkE/S88sgLAQIBYgIDAtbQAdDTAwFxsKMB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiFRQUwNvBPhhAvhi2zxa2zzy4ILI+EMBzH8BygBZAvQAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFsntVBEEAgEgDA0EzAGSMH/gcCHXScIflTAg1wsf3iCCEF2OcsK6jq4w0x8BghBdjnLCuvLggfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4Igx4CCCEPOc3wy64wIgghDJiyNpuuMCghCUapi2ugUGBwgAqnCAZPhEbpf4JfgVf/hk3iGh+BGgUhABgQELAshZWSDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IjPFoEBAc8AyRA0EiBulTBZ9FkwlEEz9BPiAX8AYDDTHwGCEPOc3wy68uCB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiDExfwGeMNMfAYIQyYsjabry4IGBAQHXAAExggClUY0IYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABCPHBbPy9FIQcn9VIG1tbds8fwoBWI6n0x8BghCUapi2uvLggdM/ATHIAYIQr/kPV1jLH8s/yfhCAXBt2zx/4DBwCQE6bW0ibrOZWyBu8tCAbyIBkTLiECRwAwSAQlAj2zwKAcrIcQHKAVAHAcoAcAHKAlAFINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WUAP6AnABymgjbrORf5MkbrPilzMzAXABygDjDSFus5x/AcoAASBu8tCAAcyVMXABygDiyQH7AAsAmH8BygDIcAHKAHABygAkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDiJG6znX8BygAEIG7y0IBQBMyWNANwAcoA4nABygACfwHKAALJWMwCEb72Ntnm2eNhDBEOAgEgDxAAAiECEbsL3bPNs8bCGBESABG4K+7UTQ0gABgBfu1E0NQB+GPSAAGOJPQE+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiBJsEuAw+CjXCwqDCbry4InbPBMAAiAASm2NCGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQ=');
+    const __system = Cell.fromBase64('te6cckECFgEAA3UAAQHAAQEFoR1bAgEU/wD0pBP0vPLICwMCAWIEDQLW0AHQ0wMBcbCjAfpAASDXSYEBC7ry4Igg1wsKIIEE/7ry0ImDCbry4IhUUFMDbwT4YQL4Yts8Wts88uCCyPhDAcx/AcoAWQL0AAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxbJ7VQSBQTMAZIwf+BwIddJwh+VMCDXCx/eIIIQXY5ywrqOrjDTHwGCEF2OcsK68uCB+kABINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiDHgIIIQ85zfDLrjAiCCEMmLI2m64wKCEJRqmLa6BgcICQCqcIBk+ERul/gl+BV/+GTeIaH4EaBSEAGBAQsCyFlZINdJgQELuvLgiCDXCwoggQT/uvLQiYMJuvLgiM8WgQEBzwDJEDQSIG6VMFn0WTCUQTP0E+IBfwBgMNMfAYIQ85zfDLry4IH6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIMTF/AZ4w0x8BghDJiyNpuvLggYEBAdcAATGCAKVRjQhgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEI8cFs/L0UhByf1UgbW1t2zx/CwFYjqfTHwGCEJRqmLa68uCB0z8BMcgBghCv+Q9XWMsfyz/J+EIBcG3bPH/gMHAKATptbSJus5lbIG7y0IBvIgGRMuIQJHADBIBCUCPbPAsByshxAcoBUAcBygBwAcoCUAUg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIzxZQA/oCcAHKaCNus5F/kyRus+KXMzMBcAHKAOMNIW6znH8BygABIG7y0IABzJUxcAHKAOLJAfsADACYfwHKAMhwAcoAcAHKACRus51/AcoABCBu8tCAUATMljQDcAHKAOIkbrOdfwHKAAQgbvLQgFAEzJY0A3ABygDicAHKAAJ/AcoAAslYzAIBIA4QAhG+9jbZ5tnjYQwSDwACIQIBIBEVAhG7C92zzbPGwhgSFAF+7UTQ1AH4Y9IAAY4k9AT6QAEg10mBAQu68uCIINcLCiCBBP+68tCJgwm68uCIEmwS4DD4KNcLCoMJuvLgids8EwBKbY0IYAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAACIAARuCvu1E0NIAAYnHBDuw==');
     let builder = beginCell();
     builder.storeRef(__system);
     builder.storeUint(0, 1);
@@ -454,6 +538,7 @@ const Ruffruff_errors: { [key: number]: { message: string } } = {
     135: { message: `Code of a contract was not found` },
     136: { message: `Invalid address` },
     137: { message: `Masterchain support is not enabled for this contract` },
+    42321: { message: `Holding wallet not set` },
 }
 
 const Ruffruff_types: ABIType[] = [
@@ -464,19 +549,25 @@ const Ruffruff_types: ABIType[] = [
     {"name":"DeployOk","header":2952335191,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}}]},
     {"name":"FactoryDeploy","header":1829761339,"fields":[{"name":"queryId","type":{"kind":"simple","type":"uint","optional":false,"format":64}},{"name":"cashback","type":{"kind":"simple","type":"address","optional":false}}]},
     {"name":"SubmitWallet","header":1569616578,"fields":[{"name":"address","type":{"kind":"simple","type":"address","optional":false}}]},
+    {"name":"SetHoldingWallet","header":4087144204,"fields":[{"name":"address","type":{"kind":"simple","type":"address","optional":false}}]},
+    {"name":"TransferToHoldingWallet","header":3381338985,"fields":[{"name":"amount","type":{"kind":"simple","type":"int","optional":false,"format":257}}]},
     {"name":"WalletResponse","header":null,"fields":[{"name":"address","type":{"kind":"simple","type":"address","optional":false}},{"name":"randomNumber","type":{"kind":"simple","type":"int","optional":false,"format":257}}]},
 ]
 
 const Ruffruff_getters: ABIGetter[] = [
-    {"name":"getSubmittedWallets","arguments":[],"returnType":{"kind":"dict","key":"address","value":"WalletResponse","valueFormat":"ref"}},
+    {"name":"SubmittedWallets","arguments":[],"returnType":{"kind":"dict","key":"address","value":"WalletResponse","valueFormat":"ref"}},
+    {"name":"HoldingWallet","arguments":[],"returnType":{"kind":"simple","type":"address","optional":false}},
 ]
 
 export const Ruffruff_getterMapping: { [key: string]: string } = {
-    'getSubmittedWallets': 'getGetSubmittedWallets',
+    'SubmittedWallets': 'getSubmittedWallets',
+    'HoldingWallet': 'getHoldingWallet',
 }
 
 const Ruffruff_receivers: ABIReceiver[] = [
     {"receiver":"internal","message":{"kind":"typed","type":"SubmitWallet"}},
+    {"receiver":"internal","message":{"kind":"typed","type":"SetHoldingWallet"}},
+    {"receiver":"internal","message":{"kind":"typed","type":"TransferToHoldingWallet"}},
     {"receiver":"internal","message":{"kind":"typed","type":"Deploy"}},
 ]
 
@@ -510,11 +601,17 @@ export class Ruffruff implements Contract {
         this.init = init;
     }
     
-    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: SubmitWallet | Deploy) {
+    async send(provider: ContractProvider, via: Sender, args: { value: bigint, bounce?: boolean| null | undefined }, message: SubmitWallet | SetHoldingWallet | TransferToHoldingWallet | Deploy) {
         
         let body: Cell | null = null;
         if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'SubmitWallet') {
             body = beginCell().store(storeSubmitWallet(message)).endCell();
+        }
+        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'SetHoldingWallet') {
+            body = beginCell().store(storeSetHoldingWallet(message)).endCell();
+        }
+        if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'TransferToHoldingWallet') {
+            body = beginCell().store(storeTransferToHoldingWallet(message)).endCell();
         }
         if (message && typeof message === 'object' && !(message instanceof Slice) && message.$$type === 'Deploy') {
             body = beginCell().store(storeDeploy(message)).endCell();
@@ -525,10 +622,17 @@ export class Ruffruff implements Contract {
         
     }
     
-    async getGetSubmittedWallets(provider: ContractProvider) {
+    async getSubmittedWallets(provider: ContractProvider) {
         let builder = new TupleBuilder();
-        let source = (await provider.get('getSubmittedWallets', builder.build())).stack;
+        let source = (await provider.get('SubmittedWallets', builder.build())).stack;
         let result = Dictionary.loadDirect(Dictionary.Keys.Address(), dictValueParserWalletResponse(), source.readCellOpt());
+        return result;
+    }
+    
+    async getHoldingWallet(provider: ContractProvider) {
+        let builder = new TupleBuilder();
+        let source = (await provider.get('HoldingWallet', builder.build())).stack;
+        let result = source.readAddress();
         return result;
     }
     
