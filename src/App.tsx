@@ -78,7 +78,13 @@ function App() {
                             Daily Pool
                         </label>
                 </div>
-
+                
+                <div className="poolDetail">
+                    Pool size 
+                    <div className="txs">
+                        Pool winners
+                    </div>
+                </div>
                 <div className="flex flex-col bg-gray-200 justify-center items-center pb-8 mb-4 pt-8">
                     <Input
                         className='p-2 rounded-[15px]'
